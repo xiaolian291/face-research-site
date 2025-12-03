@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8" />
+    <title>人臉資料庫研究計畫</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background: #f5f5f7;
+            color: #1f2933;
+        }
+
+        header {
+            background: linear-gradient(135deg, #4f46e5, #6366f1);
+            color: white;
+            padding: 2rem 1.5rem;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0 0 0.5rem;
+            font-size: 2rem;
+        }
+
+        header p {
+            margin: 0.2rem 0;
+            opacity: 0.9;
+        }
+
+        main {
+            max-width: 960px;
+            margin: 1.5rem auto 3rem;
+            padding: 0 1rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.75rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 12px 25px rgba(15, 23, 42, 0.08);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            margin-bottom: 0.75rem;
+            font-size: 1.4rem;
+        }
+
+        .section-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+            gap: 1.5rem;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 999px;
+            background: #eef2ff;
+            color: #4338ca;
+            font-size: 0.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        ul {
+            padding-left: 1.2rem;
+            margin-top: 0.4rem;
+        }
+
+        .highlight-box {
+            background: #f9fafb;
+            border-radius: 0.75rem;
+            padding: 0.75rem 1rem;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .highlight-box strong {
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+
+        /* 表單區 */
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        label {
+            font-size: 0.95rem;
+        }
+
+        input[type="file"] {
+            padding: 0.4rem;
+            border-radius: 0.5rem;
+            border: 1px solid #cbd5e1;
+            background: #f8fafc;
+        }
+
+        .checkbox-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.4rem;
+            font-size: 0.9rem;
+        }
+
+        .checkbox-row input[type="checkbox"] {
+            margin-top: 0.15rem;
+        }
+
+        button[type="submit"] {
+            margin-top: 0.5rem;
+            padding: 0.6rem 1rem;
+            border-radius: 999px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #4f46e5, #6366f1);
+            color: white;
+            transition: transform 0.1s ease, box-shadow 0.1s ease, opacity 0.1s ease;
+            box-shadow: 0 12px 18px rgba(79, 70, 229, 0.25);
+        }
+
+        button[type="submit"]:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 16px 30px rgba(79, 70, 229, 0.3);
+            opacity: 0.95;
+        }
+
+        button[type="submit"]:active {
+            transform: translateY(0);
+            box-shadow: 0 8px 16px rgba(79, 70, 229, 0.2);
+        }
+
+        .note {
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+
+        .messages {
+            margin-bottom: 0.75rem;
+        }
+
+        .flash {
+            background: #ecfdf5;
+            border-left: 4px solid #22c55e;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.5rem;
+            font-size: 0.9rem;
+            margin-bottom: 0.4rem;
+        }
+
+        @media (max-width: 768px) {
+            .section-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>人臉辨識資料庫研究計畫</h1>
+        <p>我們正在建立一個用於學術研究的人臉影像資料庫，邀請你自願參與並提供照片。</p>
+        <p class="note">※ 以下內容僅示範，可依照 IRB / 研究計畫內容詳細修改。</p>
+    </header>
+
+    <main>
+        <!-- 區塊一：團隊與研究目的 -->
+        <section class="card section-grid">
+            <div>
+                <span class="tag">關於我們</span>
+                <h2>研究團隊簡介</h2>
+                <p>
+                    我們是來自某某大學 / 研究單位的研究團隊，主要研究領域包含：
+                </p>
+                <ul>
+                    <li>電腦視覺與影像處理</li>
+                    <li>人臉辨識與生物特徵分析</li>
+                    <li>人工智慧在日常生活中的應用</li>
+                </ul>
+                <p>
+                    本研究僅用於學術與研究用途，不會將你的照片用於商業或監控目的。
+                </p>
+            </div>
+
+            <div>
+                <span class="tag">研究目的</span>
+                <h2>為什麼需要你的協助？</h2>
+                <p>
+                    為了訓練與評估人臉辨識模型，我們需要多樣化、來自不同性別、年齡與臉部特徵的影像資料。
+                    你提供的圖片將協助我們：
+                </p>
+                <ul>
+                    <li>測試人臉辨識演算法的準確度與公平性</li>
+                    <li>研究光線、角度、表情變化對辨識結果的影響</li>
+                    <li>發展更安全、可靠且具隱私保護的辨識系統</li>
+                </ul>
+
+                <div class="highlight-box">
+                    <strong>資料使用與隱私說明（示意）</strong>
+                    <ul>
+                        <li>照片只會儲存於受管控的研究用伺服器。</li>
+                        <li>不會上傳至公開網站或社群平台。</li>
+                        <li>僅研究團隊成員可存取。</li>
+                        <li>你可以隨時聯絡我們要求刪除你的資料。</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 區塊二：上傳照片 -->
+        <section class="card">
+            <span class="tag">資料提供</span>
+            <h2>上傳你的人臉照片</h2>
+
+            <!-- 顯示後端傳來的訊息 -->
+            <div class="messages">
+                {% with messages = get_flashed_messages() %}
+                  {% if messages %}
+                    {% for message in messages %}
+                      <div class="flash">{{ message }}</div>
+                    {% endfor %}
+                  {% endif %}
+                {% endwith %}
+            </div>
+
+            <form method="POST" enctype="multipart/form-data">
+                <label for="photo">請選擇一張清楚可辨識臉部的照片（png / jpg / jpeg / gif）：</label>
+                <input id="photo" type="file" name="photo" accept="image/*" required />
+
+                <div class="checkbox-row">
+                    <input id="agree" type="checkbox" name="agree" required />
+                    <label for="agree">
+                        我已閱讀並了解上述研究目的與資料使用說明，並自願提供我的人臉照片作為研究用途。
+                    </label>
+                </div>
+
+                <button type="submit">上傳照片</button>
+                <p class="note">
+                    建議：請勿上傳包含其他個人敏感資訊（如身分證、住址等）的圖片。
+                </p>
+            </form>
+        </section>
+    </main>
+</body>
+</html>
+
