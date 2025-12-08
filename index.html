@@ -1,0 +1,1449 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <title>Break the AI Gender Bias</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="一項關於「性別、科技與社會」的數位人文實踐。邀請你用臉部照片，一起修正 AI 的性別偏見。">
+  <style>
+    :root {
+      --bg-body: #fefaf2;
+      --bg-soft: #fdf2e9;
+      --bg-card: #ffffff;
+      --accent: #f97316;
+      --accent-soft: #ffedd5;
+      --accent-2: #0ea5e9;
+      --text-main: #111827;
+      --text-soft: #6b7280;
+      --border-subtle: #e5e7eb;
+      --radius-xl: 1.5rem;
+      --radius-lg: 1rem;
+      --shadow-soft: 0 16px 40px rgba(148, 163, 184, 0.35);
+      --max-width: 1040px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui,
+      sans-serif;
+      background: radial-gradient(circle at top left, #fef3c7 0, #fefaf2 40%, #fdf2e9 100%);
+      color: var(--text-main);
+      line-height: 1.7;
+      scroll-behavior: smooth;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      backdrop-filter: blur(18px);
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.94),
+        rgba(255, 255, 255, 0.88),
+        transparent
+      );
+      border-bottom: 1px solid rgba(229, 231, 235, 0.9);
+    }
+
+    .nav {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0.9rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .nav-badge {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 20% 20%, #facc15 0, #fb923c 45%, #fb7185 80%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: #1f2933;
+      box-shadow: 0 0 0 2px #fefaf2,
+                  0 0 18px rgba(248, 113, 22, 0.6);
+    }
+
+    .nav-title {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .nav-title-main {
+      font-size: 0.97rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .nav-title-sub {
+      font-size: 0.7rem;
+      color: var(--text-soft);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1rem;
+      font-size: 0.83rem;
+    }
+
+    .nav-links a {
+      padding: 0.35rem 0.6rem;
+      border-radius: 999px;
+      color: var(--text-soft);
+      border: 1px solid transparent;
+      transition: all 0.16s ease;
+      cursor: pointer;
+    }
+
+    .nav-links a:hover {
+      color: var(--text-main);
+      border-color: rgba(209, 213, 219, 0.9);
+      background: #fff7ed;
+    }
+
+    .nav-cta {
+      padding: 0.45rem 0.95rem;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #22c55e, #a3e635);
+      color: #14532d;
+      font-size: 0.8rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 12px 30px rgba(34, 197, 94, 0.5);
+      transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
+      white-space: nowrap;
+    }
+
+    .nav-cta:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 18px 45px rgba(34, 197, 94, 0.7);
+      filter: brightness(1.02);
+    }
+
+    main { flex: 1; }
+
+    .section {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 2.5rem 1.25rem 1.5rem;
+    }
+
+    /* Hero */
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2.3fr);
+      gap: 2.25rem;
+      padding-top: 2.8rem;
+      padding-bottom: 2.5rem;
+      align-items: center;
+    }
+
+    .hero-top-title {
+      font-size: clamp(1.4rem, 2.3vw, 1.9rem);
+      font-weight: 700;
+      line-height: 1.35;
+      margin-bottom: 0.75rem;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.85rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent-2);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .pill-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--accent-2);
+      box-shadow: 0 0 0 5px rgba(56, 189, 248, 0.25);
+    }
+
+    .hero-title {
+      font-size: clamp(2.1rem, 3vw, 2.6rem);
+      line-height: 1.25;
+      margin-bottom: 1rem;
+      font-family: "Georgia", "Times New Roman", serif;
+      color: #1f2937;
+    }
+
+    .hero-title span { color: var(--accent); }
+
+    .hero-subtitle {
+      font-size: 0.98rem;
+      color: var(--text-soft);
+      max-width: 32rem;
+      margin-bottom: 1.4rem;
+    }
+
+    .hero-highlight {
+      font-size: 0.92rem;
+      color: var(--text-main);
+      background: #fff7ed;
+      border-radius: 999px;
+      padding: 0.6rem 0.85rem;
+      border: 1px solid #fed7aa;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1.4rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.7rem;
+      margin-bottom: 0.7rem;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      padding: 0.7rem 1.1rem;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease, border 0.12s ease;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #22c55e, #a3e635);
+      color: #14532d;
+      box-shadow: 0 14px 32px rgba(34, 197, 94, 0.55);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 19px 46px rgba(34, 197, 94, 0.7);
+    }
+
+    .btn-secondary {
+      background: #ffffff;
+      color: var(--text-soft);
+      border: 1px solid #e5e7eb;
+    }
+
+    .btn-secondary:hover {
+      background: #fef3c7;
+      color: var(--text-main);
+      box-shadow: 0 10px 25px rgba(148, 163, 184, 0.35);
+    }
+
+    .hero-footnote {
+      font-size: 0.8rem;
+      color: var(--text-soft);
+    }
+
+    .hero-footnote strong { color: var(--text-main); }
+
+    .hero-card {
+      background: radial-gradient(circle at top, #ffffff 0, #fff7ed 60%, #fffbeb 100%);
+      border-radius: var(--radius-xl);
+      padding: 1.8rem 1.6rem;
+      border: 1px solid #fecaca;
+      box-shadow: var(--shadow-soft);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-card-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-card-tag {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: #f97316;
+      margin-bottom: 0.8rem;
+    }
+
+    .hero-card-title {
+      font-size: 1.05rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .hero-card-text {
+      font-size: 0.9rem;
+      color: var(--text-soft);
+      margin-bottom: 0.8rem;
+    }
+
+    .hero-metrics {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.85rem;
+      margin-top: 0.7rem;
+    }
+
+    .metric {
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 1rem;
+      padding: 0.7rem 0.75rem;
+      border: 1px solid #fecaca;
+      font-size: 0.8rem;
+    }
+
+    .metric-label {
+      font-size: 0.72rem;
+      color: var(--text-soft);
+      margin-bottom: 0.25rem;
+    }
+
+    .metric-value {
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .metric-note {
+      font-size: 0.7rem;
+      color: #9ca3af;
+      margin-top: 0.15rem;
+    }
+
+    /* Section headings */
+    .section-heading {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.7rem;
+      padding: 0.45rem 0.95rem;
+      border-radius: 999px;
+      background: #fff7ed;
+      border: 1px solid #fed7aa;
+      box-shadow: 0 10px 25px rgba(248, 171, 66, 0.25);
+      margin-bottom: 0.8rem;
+      font-family: "Georgia", "Times New Roman", serif;
+    }
+
+    .section-eyebrow {
+      font-size: 0.8rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent-2);
+      margin-bottom: 0.3rem;
+    }
+
+    .section-lead {
+      font-size: 0.95rem;
+      color: var(--text-soft);
+      max-width: 40rem;
+      margin-bottom: 1.4rem;
+    }
+
+    .section-grid-2 {
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2.4fr);
+      gap: 1.8rem;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border-subtle);
+      padding: 1.6rem 1.5rem;
+      box-shadow: var(--shadow-soft);
+    }
+
+    p {
+      font-size: 0.95rem;
+      margin-bottom: 0.7rem;
+      color: var(--text-main);
+    }
+
+    p strong { color: #111827; }
+
+    .muted { color: var(--text-soft); }
+
+    .inline-tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.12rem 0.5rem;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      border: 1px solid #7dd3fc;
+      color: #0369a1;
+      background: #e0f2fe;
+      margin-right: 0.4rem;
+    }
+
+    ul {
+      list-style: disc;
+      padding-left: 1.4rem;
+      margin: 0.4rem 0 0.9rem;
+      font-size: 0.93rem;
+      color: var(--text-main);
+    }
+
+    li + li { margin-top: 0.3rem; }
+
+    .callout {
+      border-radius: var(--radius-lg);
+      background: #fffbeb;
+      border: 1px solid #fef3c7;
+      padding: 0.9rem 1rem;
+      font-size: 0.9rem;
+      margin-top: 0.6rem;
+    }
+
+    .callout-title {
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: #f97316;
+      margin-bottom: 0.35rem;
+    }
+
+    /* Experiment section */
+    .model-compare {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.9rem;
+      margin-top: 0.5rem;
+    }
+
+    .model-card {
+      border-radius: 1rem;
+      padding: 0.9rem 0.9rem;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      font-size: 0.88rem;
+    }
+
+    .model-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 0.2rem;
+      color: #0f766e;
+    }
+
+    .badge-negative {
+      font-size: 0.72rem;
+      color: #b91c1c;
+      background: #fee2e2;
+      border-radius: 999px;
+      padding: 0.15rem 0.5rem;
+      border: 1px solid #fecaca;
+      display: inline-flex;
+      margin-bottom: 0.25rem;
+    }
+
+    .badge-positive {
+      font-size: 0.72rem;
+      color: #166534;
+      background: #dcfce7;
+      border-radius: 999px;
+      padding: 0.15rem 0.5rem;
+      border: 1px solid #bbf7d0;
+      display: inline-flex;
+      margin-bottom: 0.25rem;
+    }
+
+    .book-test-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.2fr);
+      gap: 0.9rem;
+      margin-top: 0.8rem;
+    }
+
+    .mini-card {
+      border-radius: 1rem;
+      padding: 0.8rem 0.85rem;
+      background: #f9fafb;
+      border: 1px dashed #d1d5db;
+      font-size: 0.86rem;
+    }
+
+    .mini-title {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: #f97316;
+      margin-bottom: 0.3rem;
+    }
+
+    /* Results section */
+    .results-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 2.6fr) minmax(0, 2.2fr);
+      gap: 1.8rem;
+    }
+
+    .chart-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border-subtle);
+      padding: 1.5rem 1.4rem;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .chart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 1.1rem;
+    }
+
+    .chart-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .toggle-group {
+      display: inline-flex;
+      padding: 0.18rem;
+      border-radius: 999px;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      font-size: 0.8rem;
+    }
+
+    .toggle-btn {
+      border-radius: 999px;
+      border: none;
+      background: transparent;
+      color: var(--text-soft);
+      padding: 0.22rem 0.7rem;
+      cursor: pointer;
+      transition: all 0.12s ease;
+      white-space: nowrap;
+    }
+
+    .toggle-btn.active {
+      background: var(--accent-soft);
+      color: #9a3412;
+    }
+
+    /* 點陣圖區塊 */
+    .dot-section {
+      margin-bottom: 1.3rem;
+    }
+
+    .dot-title {
+      font-size: 0.86rem;
+      font-weight: 600;
+      margin-bottom: 0.2rem;
+    }
+
+    .dot-sub {
+      font-size: 0.8rem;
+      color: var(--text-soft);
+      margin-bottom: 0.6rem;
+    }
+
+    .dot-grid {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 4px;
+      background: #f9fafb;
+      border-radius: 0.9rem;
+      padding: 0.6rem;
+      border: 1px solid #e5e7eb;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+    }
+
+    .dot {
+      width: 100%;
+      padding-bottom: 100%;
+      border-radius: 999px;
+      box-shadow: 0 0 0 1px rgba(148, 163, 184, 0.5);
+      background: #e5e7eb;
+      transition: background-color 0.28s ease, box-shadow 0.28s ease;
+    }
+
+    .dot-neutral {
+      background: #111827;
+      box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.9);
+    }
+
+    .dot-correct {
+      background: #22c55e;
+      box-shadow: 0 0 0 1px rgba(21, 128, 61, 0.8);
+    }
+
+    .dot-wrong {
+      background: #f97373;
+      box-shadow: 0 0 0 1px rgba(185, 28, 28, 0.8);
+    }
+
+    .dot-legend {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+      align-items: center;
+    }
+
+    .dot-legend-group {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.8rem;
+      color: var(--text-soft);
+    }
+
+    .dot-legend-swatch {
+      width: 12px;
+      height: 12px;
+      border-radius: 999px;
+    }
+
+    .dot-legend-correct { background: #22c55e; }
+    .dot-legend-wrong { background: #f97373; }
+
+    .dot-summary {
+      font-size: 0.82rem;
+      color: var(--text-soft);
+    }
+
+    /* KDE 子區 */
+    .sub-heading {
+      font-size: 0.86rem;
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+    }
+
+    .kde-note {
+      font-size: 0.83rem;
+      color: var(--text-soft);
+      margin-bottom: 0.4rem;
+    }
+
+    .kde-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.22rem 0.55rem;
+      border-radius: 999px;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      font-size: 0.75rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .kde-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 20% 20%, #bbf7d0 0, #22c55e 55%, #166534 100%);
+      box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.3);
+    }
+
+    .kde-svg {
+      width: 100%;
+      height: auto;
+      border-radius: 1rem;
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      box-shadow: 0 8px 20px rgba(148, 163, 184, 0.35);
+      margin-bottom: 0.5rem;
+    }
+
+    .kde-curve {
+      fill-opacity: 0.16;
+      stroke-width: 2.2;
+      stroke-linejoin: round;
+      transition: opacity 0.2s ease;
+    }
+
+    .kde-curve-biased {
+      stroke: #f97373;
+      fill: #fecaca;
+    }
+
+    .kde-curve-fair {
+      stroke: #22c55e;
+      fill: #bbf7d0;
+    }
+
+    .kde-curve.dimmed {
+      opacity: 0.2;
+    }
+
+    .kde-curve.active {
+      opacity: 1;
+    }
+
+    .kde-threshold {
+      stroke: #9ca3af;
+      stroke-dasharray: 4 4;
+      stroke-width: 1.4;
+    }
+
+    .kde-axis-text {
+      font-size: 8px;
+      fill: #9ca3af;
+    }
+
+    .pvalue-box {
+      margin-top: 0.2rem;
+      border-radius: 1rem;
+      padding: 0.75rem 0.8rem;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      font-size: 0.82rem;
+      margin-bottom: 0.9rem;
+    }
+
+    .pvalue-title {
+      font-size: 0.78rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #4f46e5;
+      margin-bottom: 0.3rem;
+    }
+
+    /* Join section */
+    .join-card {
+      background: linear-gradient(135deg, #ffffff, #fffbeb);
+      border-radius: var(--radius-xl);
+      border: 1px solid #fee2e2;
+      padding: 1.8rem 1.6rem 1.4rem;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .join-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 2.2fr) minmax(0, 2.1fr);
+      gap: 1.6rem;
+    }
+
+    .tagline {
+      font-size: 0.9rem;
+      color: var(--text-soft);
+      margin-bottom: 0.7rem;
+    }
+
+    .join-list-title {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: #f97316;
+      margin-bottom: 0.45rem;
+    }
+
+    .join-list {
+      list-style: none;
+      padding-left: 0;
+      font-size: 0.9rem;
+    }
+
+    .join-list li + li { margin-top: 0.45rem; }
+
+    .join-list li::before {
+      content: "•";
+      color: var(--accent);
+      margin-right: 0.4rem;
+    }
+
+    .join-cta-box {
+      margin-top: 1rem;
+      padding-top: 0.8rem;
+      border-top: 1px dashed #fecaca;
+    }
+
+    .join-cta-text {
+      font-size: 0.88rem;
+      color: var(--text-soft);
+      margin-bottom: 0.8rem;
+    }
+
+    .upload-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      padding: 0.8rem 1.35rem;
+      border-radius: 999px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      background: linear-gradient(135deg, #22c55e, #a3e635);
+      color: #14532d;
+      box-shadow: 0 16px 40px rgba(34, 197, 94, 0.6);
+      text-decoration: none;
+      transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
+    }
+
+    .upload-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 22px 52px rgba(34, 197, 94, 0.8);
+      filter: brightness(1.03);
+    }
+
+    .upload-subnote {
+      font-size: 0.78rem;
+      color: var(--text-soft);
+      margin-top: 0.3rem;
+    }
+
+    footer {
+      border-top: 1px solid #e5e7eb;
+      padding: 1.2rem 1.25rem 1.6rem;
+      font-size: 0.78rem;
+      color: var(--text-soft);
+      background: #fffbeb;
+    }
+
+    .footer-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    @media (max-width: 900px) {
+      .hero,
+      .section-grid-2,
+      .results-grid,
+      .join-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .hero {
+        padding-top: 1.8rem;
+      }
+
+      .hero-card {
+        order: -1;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .section-heading {
+        font-size: 1.5rem;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .hero-title {
+        font-size: 1.8rem;
+      }
+
+      .hero-card {
+        padding: 1.4rem 1.3rem;
+      }
+
+      .section {
+        padding-inline: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <nav class="nav">
+      <div class="nav-left">
+        <div class="nav-badge">AI</div>
+        <div class="nav-title">
+          <span class="nav-title-main">BREAK THE AI GENDER BIAS</span>
+          <span class="nav-title-sub">性別・科技・社會｜數位人文實踐</span>
+        </div>
+      </div>
+      <div class="nav-links">
+        <a href="#problem">問題意識</a>
+        <a href="#experiment">實驗設計</a>
+        <a href="#results">研究成果</a>
+        <a href="#join">參與計畫</a>
+      </div>
+      <!-- 右上按鈕：導到 Google 表單 -->
+      <button class="nav-cta" onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSeA8Lx41XgPxYygAcIG8fgpHOi4zx8SRKux81IX5n4DAPB0YA/viewform?usp=sharing&ouid=106304216487476950580', '_blank')">
+        一同參與計畫
+      </button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section class="section">
+      <div class="hero">
+        <div>
+          <h1 class="hero-top-title">
+            人臉辨識的性別偏差與修正：<br>
+            從AI偏見到公眾參與的多元資料庫
+          </h1>
+          <div class="hero-eyebrow">
+            <span class="pill-dot"></span>
+            科技產生的不平等，其實是社會偏見的數位投射
+          </div>
+          <h2 class="hero-title">
+            AI不該有偏見，<span>但數據有</span>—<br>
+            讓我們一起修正它。
+          </h2>
+          <p class="hero-subtitle">
+            這是一項關於「性別、科技與社會」的數位人文實踐。
+            您的臉孔，將成為推動AI公平正義的關鍵力量。
+          </p>
+
+          <div class="hero-highlight">
+            我們用實際訓練出來的人臉辨識模型，測試後得到結論：<strong>誰在資料中佔比越多時，AI對誰的識別能力越好。</strong>
+          </div>
+
+          <div class="hero-actions">
+            <a class="btn-primary" href="#join">
+              用一張您的照片，一同參與計畫
+            </a>
+            <a class="btn-secondary" href="#problem">
+              了解背後的研究
+            </a>
+          </div>
+
+          <p class="hero-footnote">
+            這不是一個百萬分之一的巧合。<br>
+            <strong>我們真正關心的是：在人們的生活受益於機器學習時，誰的權益在過程中被忽視？</strong>
+          </p>
+        </div>
+
+        <aside class="hero-card" aria-label="研究摘要">
+          <div class="hero-card-inner">
+            <div class="hero-card-tag">研究計畫摘要</div>
+            <div class="hero-card-title">AI 戴上有色眼鏡時，誰會被忽視？</div>
+            <p class="hero-card-text">
+              我們透過控制訓練資料中的性別比例，打造一個「偏差模型」與一個「公正模型」，並比較它們在辨識女性臉孔時的表現落差。
+            </p>
+
+            <div class="hero-metrics">
+              <div class="metric">
+                <div class="metric-label">女性人臉辨識準確率</div>
+                <div class="metric-value">71% → 95.33%</div>
+                <div class="metric-note">僅調整資料性別比例，錯誤率即大幅下降。</div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">統計檢定 P-value</div>
+                <div class="metric-value">&lt; 0.0001</div>
+                <div class="metric-note">顯著證實：資料偏差會放大機器學習的偏見。</div>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- Problem -->
+    <section id="problem" class="section">
+      <div class="section-eyebrow">The Problem</div>
+      <h2 class="section-heading">看不見的數位不平等：當 AI 戴上有色眼鏡</h2>
+      <p class="section-lead">
+        從手機解鎖、海關出入境到警政偵查，人臉辨識技術已經深植我們的日常生活。
+        然而，這些理應「客觀」、「中立」的系統，卻常常在不知不覺中複製了我們社會既有的偏見。
+      </p>
+
+      <div class="section-grid-2">
+        <div class="card">
+          <p><span class="inline-tag">Data Tells a Story</span></p>
+          <p>
+            過去研究顯示，主流商業人臉辨識模型在辨識女性時的錯誤率，顯著高於男性。
+            如果你是女性，在通過自動化安檢、門禁系統，或使用需要人臉認證的服務時，
+            更容易面臨辨識失敗、被誤認，甚至被拒絕服務。
+          </p>
+          <p class="muted">
+            對系統而言，這可能只是「一個錯誤值」；但對當事人而言，卻是一次次被懷疑、被延誤、被排除在外的經驗。
+          </p>
+
+          <div class="callout">
+            <div class="callout-title">問題其實不在模型本身</div>
+            <p>
+              多數時候，錯不在模型，而在它「學習」的那一本課本——
+              也就是訓練資料集。如果 AI 接收到的教學範本中，絕大多數都是男性臉孔，
+              它就會誤以為「男性特徵」才是人臉的標準答案。
+            </p>
+            <p>
+              於是，當它面對女性時，反而容易將其誤判為「非人臉」或「物品」。
+              這不僅是技術上的瑕疵，更是數位時代中一種新的性別不正義。
+            </p>
+          </div>
+        </div>
+
+        <div class="card">
+          <p><span class="inline-tag">Invisible Inequality</span></p>
+          <p>
+            如果一個社會的公共建設，只為某一種身體設計，那些不符合標準的人，就會被迫適應、繞路，甚至被迫放棄使用。
+          </p>
+          <p>
+            同樣地，當 AI 的「教材」裡，大多數臉孔都來自特定性別、膚色或族群，
+            那麼所有不在這個範圍內的個體，就會被系統視為例外、噪音，甚至是「錯誤」。
+          </p>
+          <p class="muted">
+            問題在於：<strong>我們允許誰被收錄進資料？又默默地把誰排除在外？</strong><br>
+            這就是我們這個計畫想要回應的核心問題。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Experiment -->
+    <section id="experiment" class="section">
+      <div class="section-eyebrow">Our Experiment</div>
+      <h2 class="section-heading">科學驗證偏差：用實驗拆解 AI 的性別不平等</h2>
+      <p class="section-lead">
+        為了證實「資料偏差會轉化為演算法偏見」這個假設，我們設計了一套嚴謹的對照實驗，
+        讓同一個模型在不同訓練資料下，展現出截然不同的世界觀。
+      </p>
+
+      <div class="section-grid-2">
+        <div class="card">
+          <p><span class="inline-tag">Methodology</span></p>
+          <p>
+            我們採用了 <strong>ResNet18</strong> 作為預訓練模型，透過遷移學習 (Transfer Learning)，
+            訓練出兩個版本的人臉辨識模型：
+          </p>
+
+          <div class="model-compare">
+            <div class="model-card">
+              <div class="model-title">偏差模型 (Biased Model)</div>
+              <div class="badge-negative">模擬現實偏見</div>
+              <p class="muted">
+                訓練時幾乎只看到「男性」與「物品」的圖片，女性臉孔極少出現。
+              </p>
+            </div>
+            <div class="model-card">
+              <div class="model-title">公正模型 (Fair Model)</div>
+              <div class="badge-positive">力求性別平衡</div>
+              <p class="muted">
+                訓練時投入相同比例的「男性」、「女性」與「物品」圖片，刻意拉高女性被看見的機會。
+              </p>
+            </div>
+          </div>
+
+          <p>
+            兩個模型的架構完全相同，唯一的差別就是：<strong>在它們的「課本」裡，看得到哪些臉？</strong>
+          </p>
+        </div>
+
+        <div class="card">
+          <p><span class="inline-tag">Train vs. Test</span></p>
+          <p>
+            為了檢驗模型是不是只是「背熟課本」，我們把資料拆成兩個部分：
+          </p>
+          <div class="book-test-grid">
+            <div class="mini-card">
+              <div class="mini-title">訓練集：AI 的課本</div>
+              <p class="muted">
+                模型在訓練過程中反覆看見的資料。這會深刻影響它如何定義「人臉」與「非人臉」。
+              </p>
+            </div>
+            <div class="mini-card">
+              <div class="mini-title">測試集：AI 的期末考</div>
+              <p class="muted">
+                模型從沒看過的新圖片，用來檢驗它是否真的學會分辨人臉，而不是只記住訓練資料。
+              </p>
+            </div>
+          </div>
+          <p class="muted">
+            接下來的所有結果，都僅針對「模型如何看待女性臉孔」來比較。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Results -->
+    <section id="results" class="section">
+      <div class="section-eyebrow">Research Results</div>
+      <h2 class="section-heading">數據證實：資料一偏，AI 就會跟著偏</h2>
+      <p class="section-lead">
+        這一節先鎖定「女性照片」，比較兩個模型的行為。上方的點陣圖讓你一眼看出每一張臉的命運，
+        下方則用信心分布與統計檢定，說明偏差不是偶然，而是結構性的。
+      </p>
+
+      <div class="results-grid">
+        <!-- 左：點陣圖 + KDE -->
+        <div class="chart-card">
+          <div class="chart-header">
+            <div>
+              <div class="chart-title">女性人臉辨識準確率與信心分布</div>
+              <p class="muted" style="font-size:0.8rem;">
+                你可以在右上切換「偏差模型」與「公正模型」，看看女性臉孔在兩種模型中的差別。
+              </p>
+            </div>
+            <div class="toggle-group">
+              <button class="toggle-btn toggle-model active" data-model="biased">偏差模型</button>
+              <button class="toggle-btn toggle-model" data-model="fair">公正模型</button>
+            </div>
+          </div>
+
+          <!-- 點陣圖在上 -->
+          <div class="dot-section">
+            <div class="dot-title">在女性測試樣本中的辨識準確率</div>
+            <div class="dot-sub">
+              每一個小圓點代表一張女性測試照片。綠色代表被正確辨識為「人臉」，紅色代表模型判錯。
+            </div>
+            <div id="dot-grid" class="dot-grid"></div>
+            <div class="dot-legend">
+              <div class="dot-legend-group">
+                <span class="dot-legend-swatch dot-legend-correct"></span> 正確辨識
+              </div>
+              <div class="dot-legend-group">
+                <span class="dot-legend-swatch dot-legend-wrong"></span> 錯誤辨識
+              </div>
+              <div class="dot-summary" id="dot-summary">
+                偏差模型：100 張女性照片中，大約有 71 張被正確辨識，其餘 29 張被系統看錯。
+              </div>
+            </div>
+          </div>
+
+          <!-- 信心分布區 -->
+          <div style="margin-top:1.1rem;">
+            <div class="sub-heading">女性人臉辨識準確率與信心分布</div>
+            <p class="kde-note">
+              準確率只看「對或錯」；但我們也關心模型下判斷時有多「心虛」或多「篤定」，
+              因此畫出信心分數的分布（KDE 圖）。
+            </p>
+            <div class="kde-chip">
+              <span class="kde-dot"></span>
+              核密度估計圖 (KDE)：信心分數的分布
+            </div>
+
+            <svg class="kde-svg" viewBox="0 0 400 220" aria-label="Confidence density for female images">
+              <!-- 底線與座標軸文字（示意用） -->
+              <line x1="40" y1="190" x2="380" y2="190" stroke="#d1d5db" stroke-width="1" />
+              <text x="40" y="205" class="kde-axis-text">0.0</text>
+              <text x="150" y="205" class="kde-axis-text">0.5</text>
+              <text x="260" y="205" class="kde-axis-text">1.0</text>
+              <text x="330" y="205" class="kde-axis-text">1.25</text>
+              <text x="120" y="215" class="kde-axis-text">Confidence Score for "Face" (0.0 ~ 1.0)</text>
+
+              <!-- 決策門檻 0.5 -->
+              <line x1="150" y1="30" x2="150" y2="190" class="kde-threshold" />
+              <text x="155" y="40" class="kde-axis-text">門檻 0.5</text>
+
+              <!-- 偏差模型：分布較扁、信心較低 -->
+              <path
+                class="kde-curve kde-curve-biased active"
+                d="M40 190
+                   C 70 188, 90 182, 110 175
+                   C 135 165, 145 150, 155 140
+                   C 170 125, 185 120, 205 118
+                   C 230 115, 250 125, 265 140
+                   C 285 160, 300 175, 320 182
+                   C 340 188, 360 190, 380 190
+                   L 380 190 L 40 190 Z"/>
+              <!-- 公正模型：集中在 1.0 附近的一根尖峰 -->
+              <path
+                class="kde-curve kde-curve-fair dimmed"
+                d="M40 190
+                   C 200 190, 220 190, 250 190
+                   C 265 190, 272 150, 280 70
+                   C 288 150, 295 190, 310 190
+                   C 335 190, 360 190, 380 190
+                   L 380 190 L 40 190 Z"/>
+            </svg>
+
+            <p class="muted" id="kde-description" style="font-size:0.86rem;">
+              在偏差模型中，對女性臉孔的信心分數分散且偏低，很多樣本落在門檻 0.5 左右甚至以下，
+              模型對「這是不是人臉」顯得猶豫不決，這也解釋了為何它更容易出錯。
+            </p>
+          </div>
+        </div>
+
+        <!-- 右：McNemar + 解說文字 -->
+        <div class="card">
+          <div class="pvalue-box">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:0.5rem;flex-wrap:wrap;">
+              <div class="pvalue-title">統計上的鐵證（McNemar's Test）</div>
+              <div class="toggle-group" style="font-size:0.75rem;">
+                <button class="toggle-btn toggle-dataset active" data-dataset="test">測試集</button>
+                <button class="toggle-btn toggle-dataset" data-dataset="train">訓練集</button>
+              </div>
+            </div>
+            <p id="pvalue-summary">
+              使用<strong>測試集</strong>（模型沒看過的新女性照片）比較兩個模型時，
+              在 100 多張樣本中，有 73 張是「偏差模型判錯，但公正模型判對」，反向情形幾乎沒有出現。
+            </p>
+            <p class="muted" id="pvalue-detail">
+              把結果整理成 2×2 比較矩陣，可得到 McNemar 統計量約 71，P-value 幾乎等於 0（&lt; 0.0001），
+              代表我們可以非常有信心地拒絕「兩個模型對女性沒有差別」的虛無假設。
+              換句話說：<strong>在測試集上，公正模型在女性臉孔上的表現顯著優於偏差模型。</strong>
+            </p>
+          </div>
+
+          <p><span class="inline-tag">What the Numbers Say</span></p>
+
+          <p><strong>一、面對陌生女性時，誰比較可靠？</strong></p>
+          <p class="muted">
+            在從未看過的女性照片上，偏差模型對女性的準確率僅約 <strong>71%</strong>，
+            而在加入更多女性臉孔後，公正模型的準確率則大幅躍升至約 <strong>95.33%</strong>。
+            只要讓「教材」變得更性別平衡，AI 對女性的辨識能力就能被大幅修正。
+          </p>
+
+          <p><strong>二、就算是熟悉的臉，差異仍然存在</strong></p>
+          <p class="muted">
+            即使在模型讀過的「課本」——訓練集上，偏差模型仍然更容易把女性判錯；
+            而公正模型則幾乎對所有女性臉孔都給出接近 1.0 的高信心分數。
+            這顯示偏差不是只出現在新資料上，而是從一開始就被寫進模型對「臉」的定義裡。
+          </p>
+
+          <p><strong>三、統計學上的結論：偏差真的存在，而且很顯著</strong></p>
+          <p class="muted">
+            無論是測試集或訓練集，McNemar 2×2 比較矩陣都呈現同樣的現象：
+            「偏差錯但公正對」的格子裡有幾十張女性照片，而「偏差對但公正錯」幾乎為零。
+            這些結果一起告訴我們：<strong>只要訓練資料裡誰比較常被看見，AI 就會對誰比較有把握；</strong>
+            而那些在資料裡被忽略的人，則更容易在現實世界裡被系統看不見。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Join -->
+    <section id="join" class="section">
+      <div class="section-eyebrow">Join Us</div>
+      <h2 class="section-heading">這不只是一個資料庫，這是一場數據平權運動</h2>
+      <p class="section-lead">
+        我們的實驗已經證明：改善 AI 偏見最直接有效的方法，就是<strong>增加資料的多樣性</strong>。
+        目前的公開人臉資料庫中，女性、特定膚色或族群仍然嚴重不足——
+        我們不能把希望全部寄託在科技公司上，而是需要一起行動。
+      </p>
+
+      <div class="join-card">
+        <div class="join-grid">
+          <div>
+            <p class="tagline">
+              我們正在建立一個開源、多元的人臉資料庫平台。<br>
+              無論你的性別、膚色、年齡，你的照片都能為下一代公正 AI 注入關鍵養分。
+            </p>
+
+            <div class="join-list-block">
+              <div class="join-list-title">為什麼需要你的臉孔？</div>
+              <ul class="join-list">
+                <li>讓 AI 的「教材」不再只看見單一性別與膚色。</li>
+                <li>讓研究者可以更精確地檢驗與修正模型中的偏見。</li>
+                <li>讓未來的人臉辨識系統，對每一張臉都同樣友善。</li>
+              </ul>
+            </div>
+
+            <div class="join-list-block" style="margin-top:0.9rem;">
+              <div class="join-list-title">關於你的隱私，我們比誰都在乎</div>
+              <ul class="join-list">
+                <li><strong>學術限定：</strong>所有資料僅用於本學術研究與非營利模型訓練，不會提供給商業用途。</li>
+                <li><strong>去識別化：</strong>在模型訓練完成後，我們會採取去識別化處理，降低被追溯到個人的風險。</li>
+                <li><strong>透明公開：</strong>我們將定期公開研究成果，讓你看見自己的貢獻如何改善 AI 的表現。</li>
+              </ul>
+            </div>
+          </div>
+
+          <div>
+            <div class="join-cta-box">
+              <p class="join-cta-text">
+                不要讓演算法定義你，而是由你來定義演算法。<br>
+                點開下方表單，上傳你的照片，讓「誰被看見」這件事不再只是矽谷說了算。
+              </p>
+
+              <!-- 這裡導到 Google 表單 -->
+              <a class="upload-btn" href="https://docs.google.com/forms/d/e/1FAIpQLSeA8Lx41XgPxYygAcIG8fgpHOi4zx8SRKux81IX5n4DAPB0YA/viewform?usp=sharing&ouid=106304216487476950580" target="_blank" rel="noopener">
+                透過 Google 表單上傳照片
+              </a>
+              <p class="upload-subnote">
+                點擊後會開啟 Google 表單，你可以先完整閱讀研究說明與同意書，再決定是否參與。
+              </p>
+            </div>
+
+            <div style="margin-top:1.3rem; font-size:0.83rem; color:var(--text-soft);">
+              <p style="margin-bottom:0.4rem;"><strong>這也是一堂關於「數位公民」的課。</strong></p>
+              <p>
+                當我們主動選擇把自己的樣貌，放進一個為公平而設計的資料庫時，我們也在重新回答一個問題：<br>
+                <em>「在這個由資料驅動的世界裡，誰有權決定什麼被記錄、什麼被遺忘？」</em>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <div>© 2025 Break the AI Gender Bias · 性別、科技與社會課程專題</div>
+      <div>聯絡我們：<span style="color:#111827;">（在這裡填你的聯絡信箱）</span></div>
+    </div>
+  </footer>
+</div>
+
+<script>
+  // 兩種模型：準確率 / 點陣圖 / 描述
+  const configs = {
+    biased: {
+      value: 71.0,
+      dotsCorrect: 71,
+      dotsWrong: 29,
+      dotText: "偏差模型：100 張女性照片中，大約有 71 張被正確辨識，其餘 29 張被系統看錯。",
+      kde: "在偏差模型中，對女性臉孔的信心分數分散且偏低，很多樣本落在門檻 0.5 左右甚至以下，模型對「這是不是人臉」顯得猶豫不決，因此更容易出錯。"
+    },
+    fair: {
+      value: 95.33,
+      dotsCorrect: 95,
+      dotsWrong: 5,
+      dotText: "公正模型：100 張女性照片中，大約有 95 張被正確辨識，只剩極少數 5 張被判錯。",
+      kde: "在公正模型裡，對女性臉孔的信心分數高度集中在接近 1.0 的區域，模型能更肯定地說出：「我很確定，這就是人臉。」"
+    }
+  };
+
+  // 測試集 / 訓練集 McNemar 描述
+  const datasetConfigs = {
+    test: {
+      summary: "使用「測試集」（模型沒看過的新女性照片）比較兩個模型時，在 100 多張樣本中，有 73 張是「偏差模型判錯，但公正模型判對」，反向情形幾乎沒有出現。",
+      detail: "把結果整理成 2×2 比較矩陣，可得到 McNemar 統計量約 71，P-value 幾乎等於 0（< 0.0001），代表我們可以非常有信心地拒絕「兩個模型對女性沒有差別」的虛無假設。"
+    },
+    train: {
+      summary: "再把同樣的比較搬到「訓練集」（模型讀過的課本），結果依然類似：有大約 90 張是偏差模型判錯、但公正模型判對。",
+      detail: "訓練集的 2×2 比較矩陣給出的 McNemar 統計量約 88，P-value 同樣趨近 0，顯示即使是對已看過的資料，公正模型也在女性臉孔上穩定優於偏差模型。"
+    }
+  };
+
+  const dotGrid = document.getElementById("dot-grid");
+  const DOT_COUNT = 100;
+  const dots = [];
+  let dotTimeouts = [];
+
+  const dotSummaryEl = document.getElementById("dot-summary");
+  const kdeTextEl = document.getElementById("kde-description");
+  const modelButtons = document.querySelectorAll(".toggle-model");
+  const datasetButtons = document.querySelectorAll(".toggle-dataset");
+  const kdeBiased = document.querySelector(".kde-curve-biased");
+  const kdeFair = document.querySelector(".kde-curve-fair");
+  const pvalueSummary = document.getElementById("pvalue-summary");
+  const pvalueDetail = document.getElementById("pvalue-detail");
+
+  // 產生 100 個點
+  function initDots() {
+    for (let i = 0; i < DOT_COUNT; i++) {
+      const d = document.createElement("div");
+      d.classList.add("dot");
+      dotGrid.appendChild(d);
+      dots.push(d);
+    }
+  }
+
+  function setModel(key) {
+    const cfg = configs[key];
+    if (!cfg) return;
+
+    // 清掉上一輪的 timeout，避免快速切換時動畫交疊
+    dotTimeouts.forEach(t => clearTimeout(t));
+    dotTimeouts = [];
+
+    // 先全部變成中性的黑點
+    dots.forEach(d => {
+      d.classList.remove("dot-correct", "dot-wrong");
+      d.classList.add("dot-neutral");
+    });
+
+    // 再依序變成綠色 / 紅色
+    const baseDelay = 150;      // 開始上色前的等待時間
+    const perDotDelay = 20;     // 每一點之間的間隔 (ms)
+
+    dots.forEach((d, idx) => {
+      const t = setTimeout(() => {
+        d.classList.remove("dot-neutral");
+        if (idx < cfg.dotsCorrect) {
+          d.classList.add("dot-correct");
+        } else {
+          d.classList.add("dot-wrong");
+        }
+      }, baseDelay + idx * perDotDelay);
+      dotTimeouts.push(t);
+    });
+
+    // 更新說明文字
+    dotSummaryEl.textContent = cfg.dotText;
+    kdeTextEl.textContent = cfg.kde;
+
+    // 切換按鈕樣式
+    modelButtons.forEach(btn => {
+      btn.classList.toggle("active", btn.dataset.model === key);
+    });
+
+    // 高亮對應的 KDE 曲線
+    if (key === "biased") {
+      kdeBiased.classList.add("active");
+      kdeBiased.classList.remove("dimmed");
+      kdeFair.classList.add("dimmed");
+      kdeFair.classList.remove("active");
+    } else {
+      kdeFair.classList.add("active");
+      kdeFair.classList.remove("dimmed");
+      kdeBiased.classList.add("dimmed");
+      kdeBiased.classList.remove("active");
+    }
+  }
+
+  function setDataset(key) {
+    const cfg = datasetConfigs[key];
+    if (!cfg) return;
+    pvalueSummary.textContent = cfg.summary;
+    pvalueDetail.textContent = cfg.detail;
+
+    datasetButtons.forEach(btn => {
+      btn.classList.toggle("active", btn.dataset.dataset === key);
+    });
+  }
+
+  modelButtons.forEach(btn => {
+    btn.addEventListener("click", () => setModel(btn.dataset.model));
+  });
+
+  datasetButtons.forEach(btn => {
+    btn.addEventListener("click", () => setDataset(btn.dataset.dataset));
+  });
+
+  // 初始化
+  window.addEventListener("load", () => {
+    initDots();
+    setModel("biased");
+    setDataset("test");
+  });
+</script>
+</body>
+</html>
